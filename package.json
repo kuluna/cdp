@@ -5,21 +5,26 @@
   "bin": {
     "cdp": "cdp.js"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "keywords": [
     "cdp"
   ],
   "author": "kuluna",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kuluna/cdp.git"
+    "url": "https://bitbucket.org/kuluna/cdp"
   },
   "license": "MIT",
   "dependencies": {
     "minimist": "^1.2.0"
   },
   "devDependencies": {
-    "@types/node": "^7.0.5",
     "@types/minimist": "^1.2.0",
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
+    "mocha": "^3.2.0",
     "tslint": "^4.4.2",
     "typescript": "^2.2.0"
   }
