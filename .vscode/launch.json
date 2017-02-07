@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}\\cdp.js",
-            "args": [ "-i", "tslint.json" ],
+            "args": [ "tslint.json", "tsconfig.json", "--in" ],
             "cwd": "${workspaceRoot}",
             "outFiles": [],
             "sourceMaps": true

@@ -1,20 +1,22 @@
 {
   "name": "cdp",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Necessary to clean the desk Policy(CDP) in node.js.",
-  "main": "cdp.js",
-  "scripts": {
-    "start": "node cdp.js"
+  "bin": {
+    "cdp": "cdp.js"
   },
   "keywords": [
     "cdp"
   ],
   "author": "kuluna",
   "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  },
   "devDependencies": {
     "@types/node": "^7.0.4",
+    "@types/minimist": "^1.2.0",
     "tslint": "^4.4.2",
     "typescript": "^2.1.5"
-  },
-  "dependencies": {}
+  }
 }

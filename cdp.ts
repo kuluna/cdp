@@ -1,47 +1,60 @@
 import * as fs from "fs";
+import * as parseArgs from "minimist";
+
+class CdpArgs implements parseArgs.ParsedArgs {
+    public _: string[];
+    public in: boolean = false;
+    public out: boolean = false;
+}
 
 class Config {
     constructor(public path: string, public format: string, public body: any) {}
 }
 
-// var configs = fs.readFileSync("configs.json", "utf-8");
-// console.log(configs);
+// parse argments
+const argv = parseArgs(process.argv.slice(2)) as CdpArgs;
 
-if (process.argv[2] === "-i" && process.argv[3]) { // in process
-    const filePath = process.argv[3];
-    // read file
-    let body = fs.readFileSync(filePath, "utf-8");
-    let format = "plain";
-
-    // try parse JSON
-    try {
-        body = JSON.parse(body);
-        format = "json";
-    } catch (e) {}
-
-    // read config.json
+// in process
+if (argv.in && argv._.length > 0) {
+    // create configs.json if exists
     try {
         fs.statSync("configs.json");
     } catch (e) {
         fs.writeFileSync("configs.json", "[]",  { encoding: "utf-8" });
     }
-
+    // read config.json
     const configs: Config[] = JSON.parse(fs.readFileSync("configs.json", "utf-8"));
-    // join configs.json
-    const config = new Config(filePath, format, body);
-    const find = configs.map((value, index) => {
-        return { i: index, v: value };
-    }).filter((m) => m.v.path === config.path);
-    if (find.length > 0) {
-        // update config
-        configs[find[0].i] = config;
-    } else {
-        configs.push(config);
-    }
+
+    argv._.forEach((filePath) => {
+        // read file
+        let body: any = fs.readFileSync(filePath, "utf-8");
+        let format = "plain";
+
+        // try parse JSON
+        try {
+            body = JSON.parse(body);
+            format = "json";
+        } catch (e) {}
+
+        // join configs.json
+        const config = new Config(filePath, format, body);
+        const find = configs.map((value, index) => {
+            return { i: index, v: value };
+        }).filter((m) => m.v.path === config.path);
+        if (find.length > 0) {
+            // update config
+            configs[find[0].i] = config;
+        } else {
+            // insert config
+            configs.push(config);
+        }
+    });
+
     // write configs.json
     fs.writeFileSync("configs.json", JSON.stringify(configs, null, 2), { encoding: "utf-8" });
 
-} else if (process.argv[2] === "-o") { // out process
+// out process
+} else if (argv.out) {
     const configs: Config[] = JSON.parse(fs.readFileSync("configs.json", "utf-8"));
 
     configs.forEach((config) => {
@@ -59,8 +72,8 @@ if (process.argv[2] === "-i" && process.argv[3]) { // in process
 
 } else {
     // show cdp Help
-    console.log("cdp mode path");
+    console.log("Usage: cdp mode\n");
     console.log("mode");
-    console.log("-i checkin configs.json");
-    console.log("-o checkout configs.json");
+    console.log("[filePath] --in checkin for configs.json");
+    console.log("--out checkout from configs.json");
 }
