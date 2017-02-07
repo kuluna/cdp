@@ -1,18 +1,10 @@
 import * as fs from "fs";
 import * as parseArgs from "minimist";
-
-class CdpArgs implements parseArgs.ParsedArgs {
-    public _: string[];
-    public in: boolean = false;
-    public out: boolean = false;
-}
-
-class Config {
-    constructor(public path: string, public format: string, public body: any) {}
-}
+import { Config } from "./models/config";
+import { ICdpArgv } from "./models/icdpargv";
 
 // parse argments
-const argv = parseArgs(process.argv.slice(2)) as CdpArgs;
+const argv = parseArgs(process.argv.slice(2)) as ICdpArgv;
 
 // in process
 if (argv.in && argv._.length > 0) {
