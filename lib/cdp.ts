@@ -88,7 +88,7 @@ export default class Cdp {
             console.log("Usage: cdp mode\n");
             console.log("mode:");
             console.log("--in [--afterdelete] [--gitignore] [filePath] Checkin for configs.json.");
-            console.log("  --afterdelete:                              Delete files after checkin.");
+            console.log("  --afterdelete                               Delete files after checkin.");
             console.log("  --gitignore                                 Add files to gitignore.");
             console.log("--out                                         Checkout from configs.json.");
         }
