@@ -54,6 +54,21 @@ export default class Cdp {
             // write configs.json
             fs.writeFileSync(this.configsPath, JSON.stringify(configs, null, 2), { encoding: "utf-8" });
 
+            // gitignore option
+            if (argv.gitignore) {
+                // create .gitignore if exists
+                try {
+                    fs.statSync(".gitignore");
+                } catch (e) {
+                    fs.writeFileSync(".gitignore", "[]",  { encoding: "utf-8" });
+                }
+            }
+
+            // after delete option
+            if (argv.afterdelete) {
+                argv._.forEach((filePath) => { try { fs.unlinkSync(filePath); } catch (e) { console.log(filePath + " was already deleted."); }} );
+            }
+
         // out process
         } else if (argv.out) {
             const configs: Config[] = JSON.parse(fs.readFileSync(this.configsPath, "utf-8"));
@@ -75,11 +90,9 @@ export default class Cdp {
             // show cdp Help
             console.log("Usage: cdp mode\n");
             console.log("mode:");
-            console.log("--in [filePath]    checkin for configs.json");
-            console.log("--out              checkout from configs.json");
+            console.log("--in [--afterdelete] [filePath]    checkin for configs.json");
+            console.log("  --afterdelete:                   delete files after checkin");
+            console.log("--out                              checkout from configs.json");
         }
     }
 }
-
-// entry point
-new Cdp().main(process.argv);

@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as fs from "fs";
-import Cdp from "../cdp";
-import { Config } from "../models/config";
+import Cdp from "../lib/cdp";
+import { Config } from "../lib/models/config";
 
 const cdp = new Cdp();
 
