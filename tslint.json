@@ -1,5 +1,5 @@
 {
-    "extends": "tslint:latest",
+    "extends": "tslint:recommended",
     "rules": {
         "no-console": [ false ],
         "max-line-length": [ false ]

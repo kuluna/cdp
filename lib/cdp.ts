@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as parseArgs from "minimist";
+import { EOL } from "os";
 import * as path from "path";
+import { GitIgnore } from "./gitignore";
 import { Config } from "./models/config";
 import { ICdpArgv } from "./models/icdpargv";
 
@@ -56,12 +58,7 @@ export default class Cdp {
 
             // gitignore option
             if (argv.gitignore) {
-                // create .gitignore if exists
-                try {
-                    fs.statSync(".gitignore");
-                } catch (e) {
-                    fs.writeFileSync(".gitignore", "[]",  { encoding: "utf-8" });
-                }
+                new GitIgnore().merge(argv._);
             }
 
             // after delete option
@@ -76,7 +73,7 @@ export default class Cdp {
             configs.forEach((config) => {
                 switch (config.format) {
                     case "plain":
-                        fs.writeFileSync(config.path, config.body.join(require("os").EOL), {encoding: "utf-8"});
+                        fs.writeFileSync(config.path, config.body.join(EOL), {encoding: "utf-8"});
                         break;
                     case "json":
                         fs.writeFileSync(config.path, JSON.stringify(config.body, null, 2), {encoding: "utf-8"});
@@ -90,9 +87,10 @@ export default class Cdp {
             // show cdp Help
             console.log("Usage: cdp mode\n");
             console.log("mode:");
-            console.log("--in [--afterdelete] [filePath]    checkin for configs.json");
-            console.log("  --afterdelete:                   delete files after checkin");
-            console.log("--out                              checkout from configs.json");
+            console.log("--in [--afterdelete] [--gitignore] [filePath] Checkin for configs.json.");
+            console.log("  --afterdelete:                              Delete files after checkin.");
+            console.log("  --gitignore                                 Add files to gitignore.");
+            console.log("--out                                         Checkout from configs.json.");
         }
     }
 }

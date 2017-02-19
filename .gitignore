@@ -41,4 +41,5 @@ jspm_packages
 *.map
 
 # Project ignore
+.vscode
 configs.json

@@ -15,12 +15,14 @@
     "README.md",
     "LICENSE",
     "bin/cdp.js",
-    "lib/cdp.js",
     "lib/cdp.d.ts",
-    "lib/models/config.js",
+    "lib/cdp.js",
+    "lib/gitignore.d.ts",
+    "lib/gitignore.js",
     "lib/models/config.d.ts",
-    "lib/models/icdpargv.js",
-    "lib/models/icdpargv.d.ts"
+    "lib/models/config.js",
+    "lib/models/icdpargv.d.ts",
+    "lib/models/icdpargv.js"
   ],
   "scripts": {
     "build": "tsc",
