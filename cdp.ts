@@ -28,11 +28,14 @@ export default class Cdp {
                 let body: any = fs.readFileSync(filePath, "utf-8");
                 let format = "plain";
 
-                // try parse JSON
                 try {
+                    // try parse JSON
                     body = JSON.parse(body);
                     format = "json";
-                } catch (e) {}
+                } catch (e) {
+                    // split new line if plain
+                    body = body.split(/\r?\n/);
+                }
 
                 // join configs.json
                 const config = new Config(filePath, format, body);
@@ -58,7 +61,7 @@ export default class Cdp {
             configs.forEach((config) => {
                 switch (config.format) {
                     case "plain":
-                        fs.writeFileSync(config.path, config.body, {encoding: "utf-8"});
+                        fs.writeFileSync(config.path, config.body.join(require("os").EOL), {encoding: "utf-8"});
                         break;
                     case "json":
                         fs.writeFileSync(config.path, JSON.stringify(config.body, null, 2), {encoding: "utf-8"});
@@ -71,9 +74,9 @@ export default class Cdp {
         } else {
             // show cdp Help
             console.log("Usage: cdp mode\n");
-            console.log("mode");
-            console.log("[filePath] --in checkin for configs.json");
-            console.log("--out checkout from configs.json");
+            console.log("mode:");
+            console.log("--in [filePath]    checkin for configs.json");
+            console.log("--out              checkout from configs.json");
         }
     }
 }
