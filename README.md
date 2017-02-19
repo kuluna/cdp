@@ -1,6 +1,8 @@
 cdp
 -----
 
+[![npm version](https://badge.fury.io/js/cdp.svg)](https://badge.fury.io/js/cdp)
+
 Necessary to clean the desk Policy(CDP) in node.js.
 
 Are there many config files in the project directory? cdp puts them in one `configs.json`.
@@ -52,7 +54,7 @@ Are there many config files in the project directory? cdp puts them in one `conf
 
 However, use cdp after,
 
-`$ cdp --in .angular-cli.json .editorconfig karma.conf.js protractor.conf.js tslint.json e2e/tsconfig.json src/tsconfig.json`
+`$ cdp --in --gitignore --afterdelete .angular-cli.json .editorconfig karma.conf.js protractor.conf.js tslint.json e2e/tsconfig.json src/tsconfig.json`
 ```
 ./
 │  .gitignore
@@ -103,9 +105,24 @@ $ cdp
 Usage: cdp mode
 
 mode:
---in [filePath]    checkin for configs.json
---out              checkout from configs.json
+--in [--afterdelete] [--gitignore] [filePath] Checkin for configs.json.
+  --afterdelete                               Delete files after checkin.
+  --gitignore                                 Add files to gitignore.
+--out                                         Checkout from configs.json.
 ```
+
+# Develop
+1. `git clone https://github.com/kuluna/cdp.git`
+1. `cd cdp`
+1. `npm install`
+1. `npm build`
+
+# Contributing
+1. Fork it!
+1. Create your feature branch: `git checkout -b my-new-feature`
+1. Commit your changes: `git commit -am 'Add some feature'`
+1. Push to the branch: `git push origin my-new-feature`
+1. Submit a pull request :D
 
 # License
 MIT License.
