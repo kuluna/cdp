@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as parseArgs from "minimist";
+import * as path from "path";
 import { Config } from "./models/config";
 import { ICdpArgv } from "./models/icdpargv";
 
@@ -8,7 +9,7 @@ export default class Cdp {
 
     public main(args: string[]) {
         // parse argments
-        const argv = parseArgs(args.slice(2)) as ICdpArgv;
+        const argv = parseArgs(args.slice(2), { boolean: true }) as ICdpArgv;
 
         // in process
         if (argv.in && argv._.length > 0) {
@@ -21,7 +22,8 @@ export default class Cdp {
             // read config.json
             const configs: Config[] = JSON.parse(fs.readFileSync(this.configsPath, "utf-8"));
 
-            argv._.forEach((filePath) => {
+            argv._.forEach((arg) => {
+                const filePath = path.normalize(arg).split(path.sep).join("/");
                 // read file
                 let body: any = fs.readFileSync(filePath, "utf-8");
                 let format = "plain";
