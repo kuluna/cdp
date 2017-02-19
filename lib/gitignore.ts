@@ -3,18 +3,20 @@ import { EOL } from "os";
 import * as path from "path";
 
 export class GitIgnore {
+    private ignorePath = ".gitignore";
+
     constructor() {
         // create configs.json if exists
         try {
-            fs.statSync(".gitignore");
+            fs.statSync(this.ignorePath);
         } catch (e) {
-            fs.writeFileSync(".gitignore", "",  { encoding: "utf-8" });
+            fs.writeFileSync(this.ignorePath, "",  { encoding: "utf-8" });
         }
     }
 
     public merge(addIgnores: string[]) {
         // read .gitignore
-        let ignores = fs.readFileSync(".gitignore", "utf-8").split(/\r?\n/);
+        let ignores = fs.readFileSync(this.ignorePath, "utf-8").split(/\r?\n/);
         // merge
         addIgnores.forEach((i) => {
             const filePath = path.normalize(i).split(path.sep).join("/");
@@ -23,6 +25,6 @@ export class GitIgnore {
             }
         });
         // write .gitignore
-        fs.writeFileSync(".gitignore", ignores.join(EOL), { encoding: "utf-8" });
+        fs.writeFileSync(this.ignorePath, ignores.join(EOL), { encoding: "utf-8" });
     }
 }

@@ -92,7 +92,46 @@ describe("Cdp", () => {
             fs.renameSync(originalPath, filePath);
         }
     });
+
+    it("--in --gitignore", () => {
+        fs.renameSync(".gitignore", ".gitignore.rename");
+
+        try {
+            const filePath = "test/testjson.json";
+            cdp.main(generateArgs("--in", ["--gitignore"], [filePath]));
+
+            // found
+            const ignores = fs.readFileSync(".gitignore", "utf-8").split(/\r?\n/);
+            const found = ignores.filter((ignore) => ignore === filePath).length > 0;
+            assert.equal(found, true, "but not added .gitignore.");
+        } finally {
+            fs.renameSync(".gitignore.rename", ".gitignore");
+        }
+    });
+
+    it ("--in --afterdelete", () => {
+        const filePath = "test/testjson.json";
+        const originalPath = "test/testjson_rename.json";
+        fs.renameSync(filePath, originalPath);
+
+        try {
+            cdp.main(generateArgs("--in", ["--afterdelete"], [filePath]));
+
+            // file deleted
+            fs.statSync(filePath);
+            assert.ok(false, "but file not delete.");
+        } catch (e) {
+            // correct file not found
+            assert.ok(true);
+        } finally {
+            fs.renameSync(originalPath, filePath);
+        }
+    });
 });
+
+function generateArgs(mode: string, options: string[], files: string[]): string[] {
+    return ["node", "cdp", mode].concat(options).concat(files);
+}
 
 function deleteAll(filePaths: string[]) {
     filePaths.forEach((filePath) => {
