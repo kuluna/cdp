@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/minimist": "^1.2.0",
-    "@types/mocha": "^2.2.39",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^12.6.2",
     "mocha": "^3.2.0",
     "tslint": "^4.4.2",
